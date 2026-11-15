@@ -52,6 +52,8 @@ The interface uses the CareSlot brand with a subtle “Designed by Ayush” cred
 
 To open the patient screen, start the project and visit `http://localhost:5173`; choose **Sign In** or **Create Account**. To open the staff screen, choose **Staff / Admin access** on the same entry page and use one of the staff credentials above.
 
+The production frontend is configured to use the deployed Java API at `https://careslot-9gwa.onrender.com/api`. Local development still uses `http://localhost:8080/api` unless `VITE_API_URL` is set.
+
 ## Run the React frontend
 
 Install Node.js, then from `frontend` run `npm install` once and `npm run dev`. Open the local URL printed by Vite. The backend must be running separately. If npm's default cache folder is not writable, add `--cache .npm-cache` to the install command.
