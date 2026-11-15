@@ -63,8 +63,8 @@ The Java API includes the browser CORS headers and `OPTIONS` preflight response 
 Railway must run the frontend and Java backend as two services:
 
 1. Create a Java backend service with the repository root directory set to `backend`.
-   - Build command: `javac -d out src/main/java/app/scheduler/*.java`
-   - Start command: `java -cp out app.scheduler.Main`
+   - Railway will use [`backend/Dockerfile`](<D:/DSA Project/backend/Dockerfile>) to compile `src/main/java/app/scheduler/*.java` and start `app.scheduler.Main`.
+   - Keep Railway's `PORT` variable enabled; the Java server uses it automatically and defaults to `8080` locally.
    - Railway supplies the `PORT` environment variable; the backend now uses it automatically. Locally it still defaults to port `8080`.
 2. Create the frontend service with the repository root directory set to `frontend`.
    - Build command: `npm run build`
