@@ -16,7 +16,8 @@ public final class Main {
     private static final Pattern FIELD = Pattern.compile("\\\"([^\\\"]+)\\\"\\s*:\\s*\\\"?([^\\\",}]+)\\\"?");
 
     public static void main(String[] args) throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        int port = serverPort();
+        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
         server.createContext("/api/login", Main::login);
         server.createContext("/api/register", Main::register);
         server.createContext("/api/logout", Main::logout);
@@ -25,7 +26,19 @@ public final class Main {
         server.createContext("/api/appointments", Main::appointments);
         server.createContext("/api/health", exchange -> send(exchange, 200, "{\"status\":\"ok\"}"));
         server.start();
-        System.out.println("Appointment Slot Finder API running at http://localhost:8080");
+        System.out.println("Appointment Slot Finder API running on port " + port);
+    }
+
+    private static int serverPort() {
+        String configured = System.getenv("PORT");
+        if (configured == null || configured.trim().isEmpty()) return 8080;
+        try {
+            int port = Integer.parseInt(configured.trim());
+            if (port < 1 || port > 65535) throw new NumberFormatException();
+            return port;
+        } catch (NumberFormatException ex) {
+            throw new IllegalStateException("PORT must be a number between 1 and 65535.");
+        }
     }
 
     private static void login(HttpExchange exchange) throws IOException {

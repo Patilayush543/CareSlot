@@ -30,13 +30,13 @@
       "problemMatcher": {
         "owner": "careslot-java",
         "pattern": {
-          "regexp": "^(Appointment Slot Finder API running at http://localhost:8080)$",
+          "regexp": "^(Appointment Slot Finder API running on port \\d+)$",
           "message": 1
         },
         "background": {
           "activeOnStart": true,
           "beginsPattern": ".*",
-          "endsPattern": "Appointment Slot Finder API running at http://localhost:8080"
+          "endsPattern": "Appointment Slot Finder API running on port \\d+"
         }
       },
       "presentation": { "reveal": "always", "panel": "dedicated", "clear": false }

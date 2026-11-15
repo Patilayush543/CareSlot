@@ -58,6 +58,23 @@ Install Node.js, then from `frontend` run `npm install` once and `npm run dev`. 
 
 The Java API includes the browser CORS headers and `OPTIONS` preflight response needed by the React development server. Use the VS Code task to start both servers when possible.
 
+## Deploy to Railway
+
+Railway must run the frontend and Java backend as two services:
+
+1. Create a Java backend service with the repository root directory set to `backend`.
+   - Build command: `javac -d out src/main/java/app/scheduler/*.java`
+   - Start command: `java -cp out app.scheduler.Main`
+   - Railway supplies the `PORT` environment variable; the backend now uses it automatically. Locally it still defaults to port `8080`.
+2. Create the frontend service with the repository root directory set to `frontend`.
+   - Build command: `npm run build`
+   - Start command: `npx vite preview --host 0.0.0.0 --port $PORT`
+   - Set the frontend environment variable `VITE_API_URL` to the backend's public URL plus `/api`, for example `https://your-java-backend.up.railway.app/api`.
+   - Redeploy the frontend after setting this variable because Vite embeds it during the build.
+3. Open the frontend public URL from another device. Do not use `localhost` in `VITE_API_URL`; on another device, `localhost` points to that device itself.
+
+The Java service remains an in-memory classroom backend, so its accounts and appointments reset whenever Railway restarts or redeploys it.
+
 ## Data structures demonstrated
 
 - **Interval tree (implemented in this project):** stores appointment time ranges by provider and date and checks overlaps efficiently.
