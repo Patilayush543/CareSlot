@@ -1,0 +1,82 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "CareSlot: Compile Java backend",
+      "type": "process",
+      "command": "C:\\Program Files\\Java\\jdk1.8.0_102\\bin\\javac.exe",
+      "args": [
+        "-d", "out",
+        "src/main/java/app/scheduler/Appointment.java",
+        "src/main/java/app/scheduler/Account.java",
+        "src/main/java/app/scheduler/DemoSession.java",
+        "src/main/java/app/scheduler/IntervalTree.java",
+        "src/main/java/app/scheduler/Main.java",
+        "src/main/java/app/scheduler/Provider.java",
+        "src/main/java/app/scheduler/Scheduler.java"
+      ],
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "problemMatcher": []
+    },
+    {
+      "label": "CareSlot: Java server",
+      "type": "process",
+      "command": "C:\\Program Files\\Java\\jdk1.8.0_102\\bin\\java.exe",
+      "args": ["-cp", "out", "app.scheduler.Main"],
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "dependsOn": "CareSlot: Compile Java backend",
+      "dependsOrder": "sequence",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "careslot-java",
+        "pattern": {
+          "regexp": "^(Appointment Slot Finder API running at http://localhost:8080)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": "Appointment Slot Finder API running at http://localhost:8080"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": false }
+    },
+    {
+      "label": "CareSlot: React server",
+      "type": "process",
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": ["node_modules/vite/bin/vite.js"],
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "careslot-vite",
+        "pattern": {
+          "regexp": "^(\\s*Local:\\s+http://localhost:5173/.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*",
+          "endsPattern": "Local:\\s+http://localhost:5173/"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": false }
+    },
+    {
+      "label": "CareSlot: Open website",
+      "type": "process",
+      "command": "C:\\Windows\\System32\\rundll32.exe",
+      "args": ["url.dll,FileProtocolHandler", "http://localhost:5173"],
+      "dependsOn": ["CareSlot: Java server", "CareSlot: React server"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "CareSlot: Start project",
+      "dependsOn": "CareSlot: Open website",
+      "dependsOrder": "sequence",
+      "group": { "kind": "build", "isDefault": true },
+      "runOptions": { "reevaluateOnRerun": true }
+    }
+  ]
+}
